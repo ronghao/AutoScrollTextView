@@ -1,4 +1,4 @@
-package com.haohahu.autoscrolltextview;
+package com.haohaohu.autoscrolltextview;
 
 /**
  * 走马灯监听

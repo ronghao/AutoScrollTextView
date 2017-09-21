@@ -1,4 +1,4 @@
-package com.haohahu.autoscrolltextviewsample;
+package com.haohaohu.autoscrolltextviewsample;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.haohahu.autoscrolltextview;
+package com.haohaohu.autoscrolltextview;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -34,8 +34,6 @@ public class MarqueeTextView extends TextView {
                 postInvalidate();
                 return;
             }
-            currentScrollPos += 1;
-            scrollTo(currentScrollPos, 0);
             if (!flag && currentScrollPos >= textWidth - getWidth()) {
                 //currentScrollPos = -getWidth();
                 flag = true;
@@ -45,7 +43,8 @@ public class MarqueeTextView extends TextView {
             }
 
             if (!flag) {
-                // 滚动时间间隔
+                currentScrollPos += 1;
+                scrollTo(currentScrollPos, 0);
                 postDelayed(this, speed);
             }
         }

@@ -1,4 +1,4 @@
-package com.haohahu.autoscrolltextview;
+package com.haohaohu.autoscrolltextview;
 
 import android.content.Context;
 import android.os.Handler;

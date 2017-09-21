@@ -1,4 +1,4 @@
-package com.haohahu.autoscrolltextviewsample;
+package com.haohaohu.autoscrolltextviewsample;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
