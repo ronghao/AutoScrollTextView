@@ -1,0 +1,90 @@
+package com.haohahu.autoscrolltextview;
+
+import android.content.Context;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ViewSwitcher;
+
+/**
+ * MarqueeSwitcher {@link android.widget.ViewSwitcher} t
+ *
+ * @author haohao on 2017/9/21 下午 03:57
+ * @version v1.0
+ */
+public class MarqueeSwitcher extends ViewSwitcher {
+    /**
+     * Creates a new empty TextSwitcher.
+     *
+     * @param context the application's environment
+     */
+    public MarqueeSwitcher(Context context) {
+        super(context);
+    }
+
+    /**
+     * Creates a new empty TextSwitcher for the given context and with the
+     * specified set attributes.
+     *
+     * @param context the application environment
+     * @param attrs a collection of attributes
+     */
+    public MarqueeSwitcher(Context context, AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @throws IllegalArgumentException if child is not an instance of
+     * {@link android.widget.TextView}
+     */
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        if (!(child instanceof MarqueeTextView)) {
+            throw new IllegalArgumentException(
+                    "TextSwitcher children must be instances of MarqueeTextView");
+        }
+        super.addView(child, index, params);
+    }
+
+    /**
+     * Sets the text of the next view and switches to the next view. This can
+     * be used to animate the old text out and animate the next text in.
+     *
+     * @param text the new text to display
+     */
+    public void setText(String text) {
+        final MarqueeTextView t = (MarqueeTextView) getNextView();
+        t.setText(text);
+        t.postStartScroll(3000);
+        showNext();
+    }
+
+    public void setText(String text, IMarqueeListener iMarqueeListener) {
+        final MarqueeTextView t = (MarqueeTextView) getNextView();
+        t.setMarqueeListener(iMarqueeListener);
+        t.setText(text);
+        t.postStartScroll(3000);
+        showNext();
+    }
+
+    /**
+     * Sets the text of the text view that is currently showing.  This does
+     * not perform the animations.
+     *
+     * @param text the new text to display
+     */
+    public void setCurrentText(CharSequence text) {
+        ((MarqueeTextView) getCurrentView()).setText(text);
+    }
+
+    public MarqueeTextView getCurrentView() {
+        return (MarqueeTextView) super.getCurrentView();
+    }
+
+    @Override
+    public CharSequence getAccessibilityClassName() {
+        return MarqueeTextView.class.getName();
+    }
+}
