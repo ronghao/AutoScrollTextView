@@ -8,7 +8,7 @@ import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
 /**
- * MarqueeSwitcher {@link android.widget.ViewSwitcher} t
+ * MarqueeSwitcher {@link android.widget.TextSwitcher} t
  *
  * @author haohao on 2017/9/21 下午 03:57
  * @version v1.0
@@ -70,14 +70,12 @@ public class MarqueeSwitcher extends ViewSwitcher {
         showNext();
     }
 
-    /**
-     * Sets the text of the text view that is currently showing.  This does
-     * not perform the animations.
-     *
-     * @param text the new text to display
-     */
-    public void setCurrentText(CharSequence text) {
-        ((MarqueeTextView) getCurrentView()).setText(text);
+    public void stopText() {
+        MarqueeTextView t = getNextView();
+        if (t != null) t.stopScroll();
+
+        MarqueeTextView t1 = getCurrentView();
+        if (t != null) t1.stopScroll();
     }
 
     public MarqueeTextView getCurrentView() {

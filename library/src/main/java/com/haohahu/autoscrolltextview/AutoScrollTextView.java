@@ -33,6 +33,8 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
 
     private Handler handler;
 
+    private boolean isStop = false;
+
     public AutoScrollTextView(Context context) {
         this(context, null);
     }
@@ -56,6 +58,7 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
                         }
                         break;
                     case FLAG_STOP_AUTO_SCROLL:
+                        isStop = true;
                         handler.removeMessages(FLAG_START_AUTO_SCROLL);
                         break;
                 }
@@ -89,6 +92,7 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
      */
     public void stopAutoScroll() {
         handler.sendEmptyMessage(FLAG_STOP_AUTO_SCROLL);
+        stopText();
     }
 
     /**
@@ -100,9 +104,17 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
 
     @Override
     public View makeView() {
-
+        // FIXME: 2017/9/21 添加这层RelativeLayout是解决动画默认回到句首的问题
         RelativeLayout layout = new RelativeLayout(getContext());
         MarqueeTextView textView = new MarqueeTextView(getContext());
+        textView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (itemClickListener != null && textList.size() > 0 && currentId != -1) {
+                    itemClickListener.onItemClick(currentId % textList.size());
+                }
+            }
+        });
         textView.setMarqueeListener(new IMarqueeListener() {
             @Override
             public void onStart() {
@@ -111,6 +123,10 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
 
             @Override
             public void onFinish() {
+                if (isStop) {
+                    isStop = false;
+                    return;
+                }
                 handler.sendMessageDelayed(Message.obtain(handler, FLAG_START_AUTO_SCROLL), 1000);
             }
         });
