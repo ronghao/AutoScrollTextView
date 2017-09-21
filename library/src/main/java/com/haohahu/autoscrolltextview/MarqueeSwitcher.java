@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 
 /**
@@ -41,9 +42,9 @@ public class MarqueeSwitcher extends ViewSwitcher {
      */
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        if (!(child instanceof MarqueeTextView)) {
+        if (!(child instanceof RelativeLayout)) {
             throw new IllegalArgumentException(
-                    "TextSwitcher children must be instances of MarqueeTextView");
+                    "MarqueeSwitcher children must be instances of RelativeLayout");
         }
         super.addView(child, index, params);
     }
@@ -55,17 +56,17 @@ public class MarqueeSwitcher extends ViewSwitcher {
      * @param text the new text to display
      */
     public void setText(String text) {
-        final MarqueeTextView t = (MarqueeTextView) getNextView();
+        final MarqueeTextView t = getNextView();
         t.setText(text);
-        t.postStartScroll(3000);
+        t.postStartScroll(1500);
         showNext();
     }
 
     public void setText(String text, IMarqueeListener iMarqueeListener) {
-        final MarqueeTextView t = (MarqueeTextView) getNextView();
+        final MarqueeTextView t = getNextView();
         t.setMarqueeListener(iMarqueeListener);
         t.setText(text);
-        t.postStartScroll(3000);
+        t.postStartScroll(1500);
         showNext();
     }
 
@@ -80,7 +81,11 @@ public class MarqueeSwitcher extends ViewSwitcher {
     }
 
     public MarqueeTextView getCurrentView() {
-        return (MarqueeTextView) super.getCurrentView();
+        return (MarqueeTextView) ((RelativeLayout) super.getCurrentView()).getChildAt(0);
+    }
+
+    public MarqueeTextView getNextView() {
+        return (MarqueeTextView) ((RelativeLayout) super.getNextView()).getChildAt(0);
     }
 
     @Override

@@ -17,7 +17,7 @@ public class MarqueeTextView extends TextView {
 
     private int currentScrollPos = 0;
     //速度
-    private int speed = 10;
+    private int speed = 6;
     // 文字宽度
     private int textWidth = -1;
     //是否计算了宽度

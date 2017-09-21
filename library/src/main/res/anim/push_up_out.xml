@@ -3,13 +3,13 @@
     android:shareInterpolator="false"
     android:zAdjustment="bottom">
   <translate
-      android:duration="3000"
+      android:duration="400"
       android:fromYDelta="0"
       android:interpolator="@android:anim/accelerate_interpolator"
       android:toYDelta="-100%"/>
 
   <alpha
-      android:duration="3000"
+      android:duration="400"
       android:fromAlpha="1.0"
       android:toAlpha="0.0"/>
 

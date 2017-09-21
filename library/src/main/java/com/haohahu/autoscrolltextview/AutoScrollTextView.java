@@ -6,6 +6,7 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,6 +100,8 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
 
     @Override
     public View makeView() {
+
+        RelativeLayout layout = new RelativeLayout(getContext());
         MarqueeTextView textView = new MarqueeTextView(getContext());
         textView.setMarqueeListener(new IMarqueeListener() {
             @Override
@@ -111,7 +114,8 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
                 handler.sendMessageDelayed(Message.obtain(handler, FLAG_START_AUTO_SCROLL), 1000);
             }
         });
-        return textView;
+        layout.addView(textView);
+        return layout;
     }
 
     /**
