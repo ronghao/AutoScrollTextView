@@ -6,14 +6,6 @@ android 上下滚动播放与走马灯效果结合
     + 使用[ViewSwitcher](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/ViewSwitcher.java)
 + 使用scrollTo(x,y)和runable循环调用，移动textview，形成走马灯效果
 
-# 使用方法
-	
-+ 使用FrameAnimView控件，继承RecyclingImageView
-	+ FrameAnimView:animSrc="@drawable/anim_loading"
-+ 自定义RecyclingImageView控件
-	+ 参见MyFrameAnimView
-
-
 # 项目添加方法
 在根 build.gradle中添加
 
