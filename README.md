@@ -21,7 +21,7 @@ android 上下滚动播放与走马灯效果结合，暂时只支持textview
 在项目build.gradle中添加  ![](https://jitpack.io/v/ronghao/AutoScrollTextView.svg)
 
 	dependencies {
-	    compile 'com.github.ronghao:AutoScrollTextView:1.0.0'
+	    compile 'com.github.ronghao:AutoScrollTextView:1.0.1'
 	}
 
 # 使用
