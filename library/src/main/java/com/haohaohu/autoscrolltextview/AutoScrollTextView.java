@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.RelativeLayout;
 import android.widget.ViewSwitcher;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,8 +30,6 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
     private int currentId = -1;
     private ArrayList<String> textList;
 
-    private ArrayList<MarqueeTextView> textViewList;
-
     private Handler handler;
 
     private boolean isStop = false;
@@ -46,25 +45,7 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
 
     private void init() {
         textList = new ArrayList<>();
-        textViewList = new ArrayList<>();
-        handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                switch (msg.what) {
-                    case FLAG_START_AUTO_SCROLL:
-                        if (textList.size() > 0) {
-                            currentId++;
-                            setText(textList.get(currentId % textList.size()));
-                        }
-                        break;
-                    case FLAG_STOP_AUTO_SCROLL:
-                        isStop = true;
-                        handler.removeMessages(FLAG_START_AUTO_SCROLL);
-                        break;
-                }
-            }
-        };
-
+        handler = new MyHandler(this);
         setFactory(this);
 
         setInAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.push_up_in));
@@ -132,6 +113,38 @@ public class AutoScrollTextView extends MarqueeSwitcher implements ViewSwitcher.
         });
         layout.addView(textView);
         return layout;
+    }
+
+    private static class MyHandler extends Handler {
+        WeakReference<AutoScrollTextView> textViewWeakReference;
+
+        private MyHandler(AutoScrollTextView autoScrollTextView) {
+            textViewWeakReference = new WeakReference<>(autoScrollTextView);
+        }
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            if (null != textViewWeakReference) {
+                AutoScrollTextView autoScrollTextView = textViewWeakReference.get();
+                switch (msg.what) {
+                    case FLAG_START_AUTO_SCROLL:
+                        if (autoScrollTextView.textList.size() > 0) {
+                            autoScrollTextView.currentId++;
+                            autoScrollTextView.setText(autoScrollTextView.textList.get(
+                                    autoScrollTextView.currentId
+                                            % autoScrollTextView.textList.size()));
+                        }
+                        break;
+                    case FLAG_STOP_AUTO_SCROLL:
+                        autoScrollTextView.isStop = true;
+                        autoScrollTextView.handler.removeMessages(FLAG_START_AUTO_SCROLL);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     /**
