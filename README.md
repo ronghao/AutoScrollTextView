@@ -1,5 +1,5 @@
 # [AutoScrollTextView](https://github.com/ronghao/FrameAnimationView) [![](https://jitpack.io/v/ronghao/AutoScrollTextView.svg)](https://jitpack.io/#ronghao/AutoScrollTextView) [![](https://travis-ci.org/ronghao/AutoScrollTextView.svg?branch=master)](https://travis-ci.org/ronghao/AutoScrollTextView)  [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ronghao/CacheManage/master/LICENSE) 
-android 上下滚动播放与走马灯效果结合
+android 上下滚动播放与走马灯效果结合，暂时只支持textview
 
 # 实现原理
 + 实现上下滚动
@@ -26,6 +26,7 @@ android 上下滚动播放与走马灯效果结合
 
 # 使用
 
+### 只有左右滚动
 ```
 <com.haohaohu.autoscrolltextview.MarqueeTextView
         android:id="@+id/main_marguee_text"
@@ -33,6 +34,44 @@ android 上下滚动播放与走马灯效果结合
         android:layout_height="20dp"
         />
 ```
+
+### 左右滚动加上下滚动
+```
+<com.haohaohu.autoscrolltextview.AutoScrollTextView
+        android:id="@+id/main_autoscroll_text1"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        />
+```
+
+### 自定义文本样式
+继承BaseScrollTextView，在继承类中实现makeTextView()方法中，自定义效果
+
+```
+@Override
+public MarqueeTextView makeTextView() {
+    MarqueeTextView textView = new MarqueeTextView(getContext());
+    textView.setTextColor(getResources().getColor(R.color.colorAccent));
+    return textView;
+}
+```
+
+### 一些方法
+|方法|类|解释|
+|-|-|
+|startAutoScroll|AutoScrollTextView|开始滚动|
+|stopAutoScroll|AutoScrollTextView|停止滚动|
+|makeTextView|AutoScrollTextView|创建一个内部可横向滚动的textview|
+|setOnItemClickListener|AutoScrollTextView|设置点击事件回调|
+|setTextList|AutoScrollTextView|设置数据源|
+|startScroll|MarqueeTextView|开始滚动|
+|postStartScroll|MarqueeTextView|延迟开始滚动|
+|stopScroll|MarqueeTextView|停止滚动|
+|setSpeed|MarqueeTextView|设置速度|
+|setMarqueeListener|MarqueeTextView|设置单个走马灯的开始和结束回调|
+
+# 注意
+### 单个页面多个滚动效果会卡顿
 
 
 # 关于
