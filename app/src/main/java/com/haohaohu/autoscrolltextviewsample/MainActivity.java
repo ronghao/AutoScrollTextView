@@ -15,7 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private MarqueeTextView margueeText1;
     private MarqueeTextView margueeText2;
     private AutoScrollTextView autoScrollTextView1;
-    private AutoScrollTextView autoScrollTextView2;
+    private MyAutoScrollTextView autoScrollTextView2;
 
     private ArrayList<String> strings;
     private ArrayList<String> strings2;
@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        autoScrollTextView2 = (AutoScrollTextView) findViewById(R.id.main_autoscroll_text2);
+        autoScrollTextView2 = (MyAutoScrollTextView) findViewById(R.id.main_autoscroll_text2);
         strings2 = new ArrayList<>();
         strings2.add("0走马灯古称蟠螭灯（秦汉）");
         strings2.add("1灯内点上蜡烛，");
