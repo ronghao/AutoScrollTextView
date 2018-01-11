@@ -58,7 +58,7 @@ public MarqueeTextView makeTextView() {
 
 ### 一些方法
 |方法|类|解释|
-|-|-|
+|-|-|-|
 |startAutoScroll|AutoScrollTextView|开始滚动|
 |stopAutoScroll|AutoScrollTextView|停止滚动|
 |makeTextView|AutoScrollTextView|创建一个内部可横向滚动的textview|
