@@ -1,3 +1,4 @@
+dmin
 # [AutoScrollTextView](https://github.com/ronghao/FrameAnimationView) [![](https://jitpack.io/v/ronghao/AutoScrollTextView.svg)](https://jitpack.io/#ronghao/AutoScrollTextView) [![](https://travis-ci.org/ronghao/AutoScrollTextView.svg?branch=master)](https://travis-ci.org/ronghao/AutoScrollTextView)  [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/ronghao/CacheManage/master/LICENSE) 
 android 上下滚动播放与走马灯效果结合，暂时只支持textview
 
@@ -5,6 +6,7 @@ android 上下滚动播放与走马灯效果结合，暂时只支持textview
 + 实现上下滚动
     + 使用[ViewSwitcher](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/master/core/java/android/widget/ViewSwitcher.java)
 + 使用scrollTo(x,y)和runable循环调用，移动textview，形成走马灯效果
++ 单个页面多个滚动效果会卡顿问题:由于handler的消息队列机制，导致滚动需要等待上一个message处理完成，现改为线程池ScheduledExecutorService
 
 # 演示
 ![例子](doc/sample.gif)
@@ -21,7 +23,7 @@ android 上下滚动播放与走马灯效果结合，暂时只支持textview
 在项目build.gradle中添加  ![](https://jitpack.io/v/ronghao/AutoScrollTextView.svg)
 
 	dependencies {
-	    compile 'com.github.ronghao:AutoScrollTextView:1.0.1'
+	    compile 'com.github.ronghao:AutoScrollTextView:1.0.2'
 	}
 
 # 使用
@@ -70,9 +72,9 @@ public MarqueeTextView makeTextView() {
 |setSpeed|MarqueeTextView|设置速度|
 |setMarqueeListener|MarqueeTextView|设置单个走马灯的开始和结束回调|
 
-# 注意
-### 单个页面多个滚动效果会卡顿
-
+# 版本更新说明
++ 1.0.2
+  + 解决单个页面多个滚动效果会卡顿问题
 
 # 关于
 + 个人博客：[www.haohaohu.com](http://www.haohaohu.com/)
