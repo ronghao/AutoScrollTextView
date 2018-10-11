@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 margueeText1.stopScroll();
                 margueeText2.stopScroll();
                 autoScrollTextView1.stopAutoScroll();
-                autoScrollTextView2.startAutoScroll();
+                autoScrollTextView2.stopAutoScroll();
             }
         });
     }

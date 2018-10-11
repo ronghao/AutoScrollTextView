@@ -6,6 +6,11 @@ import android.graphics.Paint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.widget.TextView;
+import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 跑马灯效果TextView
@@ -21,21 +26,30 @@ public class MarqueeTextView extends TextView {
     // 文字宽度
     private int textWidth = -1;
     //是否计算了宽度
-    private boolean isMeasured = false;
+    private volatile boolean isMeasured = false;
     //是否完成移动
-    private boolean flag = false;
+    private volatile boolean flag = false;
+    //是否停止移动
+    private volatile boolean isStop = false;
 
     private IMarqueeListener marqueeListener;
+    private Future future;
 
-    private Runnable runable = new Runnable() {
+    ScheduledExecutorService pool = Executors.newScheduledThreadPool(1);
+
+    final TimerTask task = new TimerTask() {
         @Override
         public void run() {
             if (textWidth == -1) {
                 postInvalidate();
                 return;
             }
+            if (isStop) {
+                return;
+            }
             if (!flag && currentScrollPos >= textWidth - getWidth()) {
                 //currentScrollPos = -getWidth();
+                task.cancel();
                 flag = true;
                 if (marqueeListener != null) {
                     marqueeListener.onFinish();
@@ -45,7 +59,6 @@ public class MarqueeTextView extends TextView {
             if (!flag) {
                 currentScrollPos += 1;
                 scrollTo(currentScrollPos, 0);
-                postDelayed(this, speed);
             }
         }
     };
@@ -71,18 +84,23 @@ public class MarqueeTextView extends TextView {
 
     public void startScroll() {
         reset();
-        removeCallbacks(runable);
-        post(runable);
+        stopFuture();
+        future = pool.scheduleAtFixedRate(task, 0, speed, TimeUnit.MILLISECONDS);
+        //removeCallbacks(runable);
+        //post(runable);
     }
 
     public void postStartScroll(int delay) {
         reset();
-        removeCallbacks(runable);
-        postDelayed(runable, delay);
+        stopFuture();
+        future = pool.scheduleAtFixedRate(task, delay, speed, TimeUnit.MILLISECONDS);
+        //removeCallbacks(runable);
+        //postDelayed(runable, delay);
     }
 
     public void stopScroll() {
-        removeCallbacks(runable);
+        isStop = true;
+        stopFuture();
     }
 
     public void setSpeed(int speed) {
@@ -114,6 +132,7 @@ public class MarqueeTextView extends TextView {
 
     public void reset() {
         flag = false;
+        isStop = false;
         currentScrollPos = 0;
         scrollTo(currentScrollPos, 0);
     }
@@ -122,5 +141,14 @@ public class MarqueeTextView extends TextView {
         super.setText(str);
         isMeasured = false;
         invalidate();
+    }
+
+    private synchronized void stopFuture() {
+        if (future != null && !future.isCancelled()) {
+            future.cancel(true);
+        }
+        if (task != null) {
+            task.cancel();
+        }
     }
 }

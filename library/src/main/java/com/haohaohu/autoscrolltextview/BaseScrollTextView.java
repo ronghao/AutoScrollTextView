@@ -21,7 +21,8 @@ import java.util.List;
 public abstract class BaseScrollTextView extends MarqueeSwitcher
         implements ViewSwitcher.ViewFactory {
 
-    private static final int FLAG_START_AUTO_SCROLL = 1001;
+    private static final int FLAG_START_AUTO_SCROLL = 1000;
+    private static final int FLAG_AUTO_SCROLL = 1001;
     private static final int FLAG_STOP_AUTO_SCROLL = 1002;
 
     private OnItemClickListener itemClickListener;
@@ -33,7 +34,7 @@ public abstract class BaseScrollTextView extends MarqueeSwitcher
 
     private Handler handler;
 
-    private boolean isStop = false;
+    private volatile static boolean isStop = false;
 
     public BaseScrollTextView(Context context) {
         this(context, null);
@@ -106,10 +107,9 @@ public abstract class BaseScrollTextView extends MarqueeSwitcher
             @Override
             public void onFinish() {
                 if (isStop) {
-                    isStop = false;
                     return;
                 }
-                handler.sendMessageDelayed(Message.obtain(handler, FLAG_START_AUTO_SCROLL), 1000);
+                handler.sendMessageDelayed(Message.obtain(handler, FLAG_AUTO_SCROLL), 1000);
             }
         });
         layout.addView(textView);
@@ -130,6 +130,18 @@ public abstract class BaseScrollTextView extends MarqueeSwitcher
                 BaseScrollTextView autoScrollTextView = textViewWeakReference.get();
                 switch (msg.what) {
                     case FLAG_START_AUTO_SCROLL:
+                        isStop = false;
+                        if (autoScrollTextView.textList.size() > 0) {
+                            autoScrollTextView.currentId++;
+                            autoScrollTextView.setText(autoScrollTextView.textList.get(
+                                    autoScrollTextView.currentId
+                                            % autoScrollTextView.textList.size()));
+                        }
+                        break;
+                    case FLAG_AUTO_SCROLL:
+                        if (isStop) {
+                            return;
+                        }
                         if (autoScrollTextView.textList.size() > 0) {
                             autoScrollTextView.currentId++;
                             autoScrollTextView.setText(autoScrollTextView.textList.get(
@@ -138,8 +150,10 @@ public abstract class BaseScrollTextView extends MarqueeSwitcher
                         }
                         break;
                     case FLAG_STOP_AUTO_SCROLL:
-                        autoScrollTextView.isStop = true;
+                        isStop = true;
                         autoScrollTextView.handler.removeMessages(FLAG_START_AUTO_SCROLL);
+                        autoScrollTextView.handler.removeMessages(FLAG_AUTO_SCROLL);
+
                         break;
                     default:
                         break;
