@@ -72,6 +72,8 @@ public MarqueeTextView makeTextView() {
 |setMarqueeListener|MarqueeTextView|设置单个走马灯的开始和结束回调|
 
 # 版本更新说明
++ 1.0.3
+  + 添加MarqueeTextViewForViewPager类，临时解决Jars-of-jam-Scheduler的问题
 + 1.0.2
   + 解决单个页面多个滚动效果会卡顿问题
 

@@ -1,5 +1,6 @@
 package com.haohaohu.autoscrolltextviewsample;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,6 +30,13 @@ public class MainActivity extends AppCompatActivity {
 
     private void init() {
         initMarguee();
+        findViewById(R.id.main_viewpager_btn).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MainViewPagerActivity.class);
+                startActivity(intent);
+            }
+        });
         findViewById(R.id.main_start_btn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

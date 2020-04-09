@@ -8,9 +8,18 @@
     >
 
   <TextView
+      android:id="@+id/main_viewpager_btn"
+      android:layout_width="match_parent"
+      android:layout_height="30dp"
+      android:gravity="center"
+      android:text="跳转到ViewPager"
+      />
+
+  <TextView
       android:id="@+id/main_start_btn"
       android:layout_width="match_parent"
       android:layout_height="30dp"
+      android:layout_below="@id/main_viewpager_btn"
       android:gravity="center"
       android:text="开始"
       />
